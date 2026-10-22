@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCESS_RESTRICTED // CYBER-DECK</title>
+    <style>
+        :root {
+            --neon-cyan: #00f0ff;
+            --neon-pink: #ff0055;
+            --dark-bg: #0a0a12;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--neon-cyan);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Efeito de linhas de TV antiga (Scanlines) */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* Tela de Bloqueio */
+        #lock-screen {
+            text-align: center;
+            z-index: 10;
+            background: rgba(10, 10, 18, 0.9);
+            padding: 40px;
+            border: 2px solid var(--neon-pink);
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+
+        h2 {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink);
+            margin-bottom: 20px;
+        }
+
+        input {
+            background: #121224;
+            border: 1px solid var(--neon-cyan);
+            padding: 10px;
+            color: #fff;
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background: var(--neon-pink);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        #error-msg {
+            color: red;
+            margin-top: 10px;
+            font-size: 12px;
+            display: none;
+        }
+
+        /* Tela de Conteúdo Secreto */
+        #content-screen {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+            max-width: 90%;
+        }
+
+        .cyber-image {
+            max-width: 100%;
+            max-height: 70vh;
+            border: 3px solid var(--neon-cyan);
+            box-shadow: 0 0 30px var(--neon-cyan);
+            border-radius: 4px;
+        }
+
+        audio {
+            margin-top: 20px;
+            filter: invert(1) hue-rotate(180deg); /* Customiza de leve o player padrão */
+            opacity: 0.7;
+        }
+
+        audio:hover { opacity: 1; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE SENHA -->
+    <div id="lock-screen">
+        <h2>[ SYSTEM_LOCKED ]</h2>
+        <p>Insira a credencial de descriptografia:</p>
+        <input type="password" id="password-input" placeholder="PASSWORD...">
+        <button onclick="checkPassword()">Acessar Deck</button>
+        <p id="error-msg">ACESSO NEGADO: Senha Incorreta.</p>
+    </div>
+
+    <!-- TELA DO CONTEÚDO (Escondida por padrão) -->
+    <div id="content-screen">
+        <!-- Cole o link da sua imagem no src abaixo -->
+        <img class="cyber-image" src="SUA_IMAGEM_AQUI.jpg" alt="Cyberpunk Art">
+        <br>
+        <!-- Cole o link da sua música no src abaixo -->
+        <audio id="cyber-audio" src="SUA_MUSICA_AQUI.mp3" controls></audio>
+    </div>
+
+    <script>
+        // Defina a sua senha aqui dentro das aspas
+        const SENHA_CORRETA = "cyber2026"; 
+
+        // Permite apertar 'Enter' para enviar a senha
+        document.getElementById("password-input").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                checkPassword();
+            }
+        });
+
+        function checkPassword() {
+            const input = document.getElementById("password-input").value;
+            const errorMsg = document.getElementById("error-msg");
+            const lockScreen = document.getElementById("lock-screen");
+            const contentScreen = document.getElementById("content-screen");
+            const audio = document.getElementById("cyber-audio");
+
+            if (input === SENHA_CORRETA) {
+                // Esconde o bloqueio e mostra a arte
+                lockScreen.style.display = "none";
+                contentScreen.style.display = "block";
+                
+                // Dá o play automático na música
+                audio.play().catch(error => {
+                    console.log("O navegador bloqueou o autoplay, mas o player está visível.");
+                });
+            } else {
+                // Mostra erro e limpa o input
+                errorMsg.style.display = "block";
+                document.getElementById("password-input").value = "";
+            }
+        }
+    </script>
+</body>
+</html>
+
+
